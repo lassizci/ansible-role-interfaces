@@ -1,0 +1,19 @@
+
+auto eth0
+iface eth0 inet static
+  address {{ ext_ip }}
+  netmask {{ ext_ip_netmask }}
+  gateway {{ ext_ip_gw }}
+  broadcast {{ ext_ip_bcast }}
+  dns-nameservers {{ ext_ip_dns }}
+  up route add -net {{ ext_ip_net }} gw {{ ext_ip_gw }} eth0
+
+{% set first_i = ext_ip|ipaddr("int") %}
+{% for ip_i in range(extra_ip_addresses) %}
+auto eth0:{{ loop.index }}
+iface eth0:{{ loop.index }} inet static
+  address {{ (first_i + loop.index)|ipv4 }}
+  netmask {{ ext_ip_netmask }}
+  broadcast {{ ext_ip_bcast }}
+
+{% endfor %}

@@ -1,0 +1,5 @@
+---
+- name: configure interfaces file
+  template: >
+    src=interfaces.j2 dest=/tmp/interfaces
+    owner=root group=root mode=0644
